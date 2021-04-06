@@ -8,6 +8,7 @@ class Product{
   name: string;
   price: number;
   qty: number;
+  disc: number;
 }
 class Invoice{
   customerName: string;
@@ -35,7 +36,7 @@ export class AppComponent {
     let docDefinition = {
       content: [
         {
-          text: 'ELECTRONIC SHOP',
+          text: 'PT. WARUNG PAKDE CORP, Tbk.',
           fontSize: 16,
           alignment: 'center',
           color: '#047886'
@@ -46,10 +47,10 @@ export class AppComponent {
           bold: true,
           alignment: 'center',
           decoration: 'underline',
-          color: 'skyblue'
+          color: 'green'
         },
         {
-          text: 'Customer Details',
+          text: 'Kepada Yth,',
           style: 'sectionHeader'
         },
         {
@@ -76,7 +77,7 @@ export class AppComponent {
           ]
         },
         {
-          text: 'Order Details',
+          text: 'Detail Pemesanan',
           style: 'sectionHeader'
         },
         {
@@ -84,14 +85,23 @@ export class AppComponent {
             headerRows: 1,
             widths: ['*', 'auto', 'auto', 'auto'],
             body: [
-              ['Product', 'Price', 'Quantity', 'Amount'],
+              ['Nama barang', 'Harga', 'Kuantitas', 'Total'],
               ...this.invoice.products.map(p => ([p.name, p.price, p.qty, (p.price*p.qty).toFixed(2)])),
-              [{text: 'Total Amount', colSpan: 3}, {}, {}, this.invoice.products.reduce((sum, p)=> sum + (p.qty * p.price), 0).toFixed(2)]
+              
+			  [{text: 'Total', colSpan: 3, bold: true}, 
+			  {}, 
+			  {}, 
+			  this.invoice.products.reduce((sum, p)=> sum + (p.qty * p.price), 0).toFixed(2)],
+			  
+			  [{text: 'Diskon', colSpan: 3, bold: true}, 
+			  {}, 
+			  {}, 
+			  this.invoice.products.reduce((sum, p)=> sum + (p.qty * p.price * p.disc / 100), 0).toFixed(2)],
             ]
           }
         },
         {
-          text: 'Additional Details',
+          text: 'Keterangan tambahan',
           style: 'sectionHeader'
         },
         {
@@ -101,7 +111,19 @@ export class AppComponent {
         {
           columns: [
             [{ qr: `${this.invoice.customerName}`, fit: '50' }],
-            [{ text: 'Signature', alignment: 'right', italics: true}],
+            [{ text: 'Hormat Kami', alignment: 'right', italics: true}],
+          ]
+        },
+		{
+          columns: [
+            
+            [{ text: 'Jokowi,', alignment: 'right', italics: true}],
+          ]
+        },
+		{
+          columns: [
+            
+            [{ text: 'Manager Accounting', alignment: 'right', italics: true, bold: true}],
           ]
         },
         {
@@ -110,9 +132,9 @@ export class AppComponent {
         },
         {
             ul: [
-              'Order can be return in max 10 days.',
-              'Warrenty of the product will be subject to the manufacturer terms and conditions.',
-              'This is system generated invoice.',
+              'Garansi dapat diklaim maksimal 10 hari.',
+              'Garansi produk tunduk pada syarat dan ketentuan pabrik.',
+              'Ini adalah faktur yang dibuat dengan sistem statis.',
             ],
         }
       ],

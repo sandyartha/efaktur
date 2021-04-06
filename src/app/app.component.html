@@ -1,8 +1,5 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-secondary d-flex justify-content-between">
-    <a class="navbar-brand" href="#">INVOICE GENERATOR</a>
-    <div>
-        <a class="text-white" href="https://github.com/ngdevelop-tech/angular-pdfmake-invoice-generator" target="_blank"><i class="fa fa-github fa-2x" aria-hidden="true"></i></a>
-    </div>
+    <a class="navbar-brand" href="#">E-FAKTUR GENERATOR</a>
 </nav>
 <form #invoiceForm="ngForm">
     <div class="container-fluid pt-2 mb-5">
@@ -10,17 +7,17 @@
             <div class="col-md-8">
                 <div class="card border-secondary">
                     <div class="card-body">
-                        <h4 class="card-title">Customer Details</h4>
+                        <h4 class="card-title">Keterangan Konsumen</h4>
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <label for="name">Name</label>
+                                    <label for="name">Nama</label>
                                     <input type="text" class="form-control" name="name" id="name"
                                         [ngClass]="{'is-invalid': invoiceForm.submitted && CustName.invalid}"
                                         [(ngModel)]="invoice.customerName" #CustName="ngModel" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="address">Address</label>
+                                    <label for="address">Alamat</label>
                                     <textarea class="form-control" name="address" id="address" row="3"
                                         [ngClass]="{'is-invalid': invoiceForm.submitted && Address.invalid}"
                                         [(ngModel)]="invoice.address" #Address="ngModel" required></textarea>
@@ -28,12 +25,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="email">Email ID</label>
+                                    <label for="email">Email / ID</label>
                                     <input type="email" class="form-control" name="email" id="email"
                                         [(ngModel)]="invoice.email" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="contactNo">Contact No.</label>
+                                    <label for="contactNo">Nomer tlp.</label>
                                     <input type="number" class="form-control" name="contactNo" id="contactNo"
                                         [ngClass]="{'is-invalid': invoiceForm.submitted && ContactNo.invalid}"
                                         [(ngModel)]="invoice.contactNo" #ContactNo="ngModel" required>
@@ -44,16 +41,17 @@
                 </div>
                 <div class="card border-secondary mt-2">
                     <div class="card-body">
-                        <h4 class="card-title d-flex justify-content-between">Order Details <button type="button"
-                                class="btn btn-secondary" (click)="addProduct()">+</button></h4>
+                        <h4 class="card-title d-flex justify-content-between">Daftar Barang<button type="button"
+                                class="btn btn-success" (click)="addProduct()">+</button></h4>
                         <div class="row">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th width="25%">Product</th>
-                                        <th width="25%">Price</th>
-                                        <th width="25%">Quantity</th>
-                                        <th width="25%">Amount</th>
+                                        <th width="25%">Nama Barang</th>
+                                        <th width="25%">Harga</th>
+                                        <th width="25%">Kuantitas</th>
+                                        <th width="25%">Diskon</th>
+                                        <th width="25%">Jumlah</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -69,13 +67,26 @@
                                                 [ngClass]="{'is-invalid': invoiceForm.submitted && ProductPrice.invalid}"
                                                 [(ngModel)]="product.price" #ProductPrice="ngModel" required>
                                         </td>
+										
                                         <td>
                                             <input type="number" class="form-control" name="quantity{{i}}" id="quantity"
                                                 [ngClass]="{'is-invalid': invoiceForm.submitted && ProductQty.invalid}"
                                                 [(ngModel)]="product.qty" #ProductQty="ngModel" required>
                                         </td>
+										
+										<td>
+                                            <input type="number" class="form-control" name="discont{{i}}" id="discont"
+                                                [ngClass]="{'is-invalid': invoiceForm.submitted && ProductQty.invalid}"
+                                                [(ngModel)]="product.disc" #ProductDisc="ngModel" required>
+                                        </td>
+										
+										<td>
+                                            <button type="button"
+                                            class="btn btn-danger" (click)="deleteProduct()">X</button>
+                                        </td>
+										
                                         <td>
-                                            {{product.price * product.qty || ''}}
+                                            {{product.price * product.qty * product.disc / 100 || ''}}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -85,7 +96,7 @@
                 </div>
                 <div class="card border-secondary mt-2">
                     <div class="card-body">
-                        <h4 class="card-title">Additional Details</h4>
+                        <h4 class="card-title">Catatan</h4>
                         <div class="form-group">
                             <textarea class="form-control" name="additionalDetails" rows="3"
                                 [(ngModel)]="invoice.additionalDetails"></textarea>
@@ -96,13 +107,13 @@
             </div>
             <div class="col-md-4">
                 <button type="button" class="btn btn-secondary btn-lg btn-block"
-                    (click)="invoiceForm.valid ? generatePDF('download') : ''">Download Invoice</button>
+                    (click)="invoiceForm.valid ? generatePDF('download') : ''">Unduh Faktur</button>
                 <button type="button" class="btn btn-secondary btn-lg btn-block"
-                    (click)="invoiceForm.valid ? generatePDF('print') : ''">Print
-                    Invoice</button>
+                    (click)="invoiceForm.valid ? generatePDF('print') : ''">Cetak
+                    Faktur</button>
                 <button type="submit" class="btn btn-secondary btn-lg btn-block"
-                    (click)="invoiceForm.valid ? generatePDF() : ''">Open
-                    Invoice</button>
+                    (click)="invoiceForm.valid ? generatePDF() : ''">Buka
+                    Faktur</button>
             </div>
         </div>
     </div>
@@ -110,8 +121,8 @@
 <footer class="fixed-bottom">
     <div class="bg-light text-center p-2">
         <h6>Made with 💗 by
-            <a class="twitter-follow-button" href="https://twitter.com/ankit_ngdevelop" target="_blank"> <i class="fa fa-twitter"
-                    aria-hidden="true"></i>Ankit_NgDevelop</a>.
+            <a class="twitter-follow-button" href="https://twitter.com/sandyartha92" target="_blank"> <i class="fa fa-twitter"
+                    aria-hidden="true"></i>Sandyartha92</a>.
         </h6>
     </div>
 </footer>
