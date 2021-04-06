@@ -80,13 +80,8 @@
                                                 [(ngModel)]="product.disc" #ProductDisc="ngModel" required>
                                         </td>
 										
-										<td>
-                                            <button type="button"
-                                            class="btn btn-danger" (click)="deleteProduct()">X</button>
-                                        </td>
-										
                                         <td>
-                                            {{product.price * product.qty * product.disc / 100 || ''}}
+                                            {{ (product.price * product.qty) - product.price * product.qty * product.disc / 100  || ''}}
                                         </td>
                                     </tr>
                                 </tbody>

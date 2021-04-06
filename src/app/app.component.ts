@@ -97,6 +97,11 @@ export class AppComponent {
 			  {}, 
 			  {}, 
 			  this.invoice.products.reduce((sum, p)=> sum + (p.qty * p.price * p.disc / 100), 0).toFixed(2)],
+			  
+			  [{text: 'Final', colSpan: 3, bold: true}, 
+			  {}, 
+			  {}, 
+			  this.invoice.products.reduce((sum, p)=> sum + ((p.qty * p.price) - p.qty * p.price * p.disc / 100), 0).toFixed(2)],
             ]
           }
         },
