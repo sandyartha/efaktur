@@ -1,0 +1,50 @@
+{
+  "hosting": {
+    "public": "dist/faktur",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "redirects": [ 
+      { "source" : "/index.html",
+        "destination" : "/",
+        "type" : 301
+      },
+      { "source" : "/wa/",
+        "destination" : "https://api.whatsapp.com/send?phone=6285645161031&text=Saya%20Berminat%20dengan%20perangkat%20sadap.%20Mohon%20Infonya.%20sadapphone.com/#disclaimer",
+        "type" : 301
+      } 
+     ],
+    "rewrites": [ {
+      "source": "/",
+      "destination": "/index.html"
+    } ],
+    "headers": [ {
+      "source" : "**/*.@(eot|otf|ttf|ttc|woff|font.css)",
+      "headers" : [ {
+        "key" : "Access-Control-Allow-Origin",
+        "value" : "*"
+      } ]
+    }, {
+      "source" : "**/*.@(js|css)",
+      "headers" : [ {
+        "key" : "Cache-Control",
+        "value" : "max-age=604800"
+      } ]
+    }, {
+      "source" : "**/*.@(jpg|jpeg|gif|png|webp|svg)",
+      "headers" : [ {
+        "key" : "Cache-Control",
+        "value" : "max-age=604800"
+      } ]
+    }, {
+      "source" : "404.html",
+      "headers" : [ {
+        "key" : "Cache-Control",
+        "value" : "max-age=300"
+      } ]
+    } ]
+  }
+}
+
