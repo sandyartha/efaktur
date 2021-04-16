@@ -20,7 +20,7 @@
                                     <label for="address">Alamat</label>
                                     <textarea class="form-control" name="address" id="address" row="3"
                                         [ngClass]="{'is-invalid': invoiceForm.submitted && Address.invalid}"
-                                        [(ngModel)]="invoice.address" #Address="ngModel" required></textarea>
+                                        [(ngModel)]="invoice.address" #Address="ngModel"></textarea>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="contactNo">Nomer tlp.</label>
-                                    <input type="number" class="form-control" name="contactNo" id="contactNo"
+                                    <input type="text" class="form-control" name="contactNo" id="contactNo"
                                         [ngClass]="{'is-invalid': invoiceForm.submitted && ContactNo.invalid}"
                                         [(ngModel)]="invoice.contactNo" #ContactNo="ngModel" required>
                                 </div>
@@ -44,26 +44,34 @@
                         <h4 class="card-title d-flex justify-content-between">Daftar Barang<button type="button"
                                 class="btn btn-success" (click)="addProduct()">+</button></h4>
                         <div class="row">
-                            <table class="table">
+						 <div class="panel-body table-responsive">
+                            <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th width="25%">Nama Barang</th>
-                                        <th width="25%">Harga</th>
-                                        <th width="25%">Kuantitas</th>
-                                        <th width="25%">Diskon</th>
-                                        <th width="25%">Jumlah</th>
+                                        <th>Nama Barang</th>
+                                        <th>Harga</th>
+                                        <th>Kuantitas</th>
+                                        <th>PPN<small>(%)</small></th>
+                                        <th>Ttl</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let product of invoice.products; let i=index">
-                                        <td scope="row">
-                                            <input type="text" class="form-control" name="productName{{i}}"
+                                        
+										<!-- PRODUCT NAME -->
+										<td scope="row">
+                                            <input style="min-width:250px" class="form-control" type="text" name="productName{{i}}"
                                                 [ngClass]="{'is-invalid': invoiceForm.submitted && ProductName.invalid}"
                                                 id="productName" [(ngModel)]="product.name" #ProductName="ngModel"
                                                 required>
                                         </td>
+										
+										<!-- PRODUCT DESCRIPTION -->
+										
+
+                                        <!-- PRODUCT PRICE -->										
                                         <td>
-                                            <input type="number" class="form-control" name="price{{i}}" id="price"
+                                            <input style="min-width:150px" type="number" class="form-control" name="price{{i}}" id="price"
                                                 [ngClass]="{'is-invalid': invoiceForm.submitted && ProductPrice.invalid}"
                                                 [(ngModel)]="product.price" #ProductPrice="ngModel" required>
                                         </td>
@@ -74,19 +82,26 @@
                                                 [(ngModel)]="product.qty" #ProductQty="ngModel" required>
                                         </td>
 										
+										
 										<td>
-                                            <input type="number" class="form-control" name="discont{{i}}" id="discont"
-                                                [ngClass]="{'is-invalid': invoiceForm.submitted && ProductQty.invalid}"
-                                                [(ngModel)]="product.disc" #ProductDisc="ngModel" required>
+                                            <input type="number" class="form-control" name="ppn{{i}}" id="ppn"
+                                                [ngClass]="{'is-invalid': invoiceForm.submitted && ProductPpn.invalid}"
+                                                [(ngModel)]="product.ppn" #ProductPpn="ngModel" required>
                                         </td>
 										
+										
+										
                                         <td>
-                                            {{ (product.price * product.qty) - product.price * product.qty * product.disc / 100  || ''}}
+										<!-- diskon dan ppn -->
+										<!-- {{ (product.price * product.qty) - (product.price * product.qty * product.disc / 100) * (10 / 100)| currency:'IDR':'Rp.'  || ''}} --> 
+                                        {{ (product.price * product.qty) + (product.ppn / 100 * product.price * product.qty) | currency:'IDR':'Rp.'  || ''}}
                                         </td>
+										
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
+					 </div>
                     </div>
                 </div>
                 <div class="card border-secondary mt-2">
